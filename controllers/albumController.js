@@ -1,4 +1,5 @@
 const Album = require("../models/albumModel");
+const Image = require("../models/imageModel");
 const User = require("../models/userModel");
 const catchAsync = require("../utils/catchAsync");
 const factory = require("./handlerFactory");
@@ -56,6 +57,19 @@ exports.removeImages = catchAsync(async (req, res, next) => {
     status: "success",
     message: "images removed successfully",
     album: newAlbum,
+  });
+});
+
+exports.getImagesInAlbum = catchAsync(async (req, res, next) => {
+  const albumId = req.params.id;
+  const album = await Album.findById(albumId);
+
+  const imagesId = album.images;
+  const images = await Image.find({ _id: { $in: imagesId } });
+
+  res.status(200).json({
+    status: "success",
+    albumImgs: images,
   });
 });
 

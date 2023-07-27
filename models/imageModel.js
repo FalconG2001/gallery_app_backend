@@ -49,7 +49,10 @@ imageSchema.post("findOneAndDelete", async (doc, next) => {
     { $pull: { images: doc._id, imageLikes: doc._id } }
   );
   await Tag.updateMany({ images: doc._id }, { $pull: { images: doc._id } });
-  await Comment.deleteMany({ _id: { $in: doc.comments } });
+
+  if (doc.comments.length > 0) {
+    await Comment.deleteMany({ _id: { $in: doc.comments } });
+  }
   await Album.findOneAndUpdate(
     { uploadedBy: doc.uploadedBy },
     { $pull: { images: doc._id } }

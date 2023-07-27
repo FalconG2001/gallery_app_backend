@@ -1,6 +1,6 @@
 const express = require("express");
-const multer = require("multer");
-const AppError = require("../utils/appError");
+// const multer = require("multer");
+// const AppError = require("../utils/appError");
 const Image = require("../models/imageModel");
 const User = require("../models/userModel");
 
@@ -12,31 +12,33 @@ const galleryController = require("./../controllers/galleryController");
 const commentRoutes = require("./commentRouter");
 const albumRoutes = require("./albumRouter");
 
-const multerStorage = multer.memoryStorage();
+// const multerStorage = multer.memoryStorage();
 
-const multerFilter = (req, file, cb) => {
-  if (file.mimetype.startsWith("image")) {
-    cb(null, true);
-  } else {
-    cb(new AppError("Not an image! Please upload only images.", 400), false);
-  }
-};
+// const multerFilter = (req, file, cb) => {
+//   if (file.mimetype.startsWith("image")) {
+//     cb(null, true);
+//   } else {
+//     cb(new AppError("Not an image! Please upload only images.", 400), false);
+//   }
+// };
 
-const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
+// const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
 
 const router = express.Router();
 
-router.route("/").get(middleware.getAll, galleryController.getAllImages);
+router.route("/").get(galleryController.getAllImages);
 router.route("/:id").get(galleryController.getImageById);
+router.route("/search/:name").get(galleryController.searchImages);
 
 router.use("/comments", commentRoutes);
 router.use(protect);
 router.use("/albums", albumRoutes);
 
+router.get("/likes/images", galleryController.getLikedImages);
+
 router
   .route("/:id")
   .patch(
-    upload.single("image"),
     middleware.uploadMul,
     middleware.updateModelMiddleware(Image),
     galleryController.updateImageById
@@ -51,7 +53,6 @@ router.post(
 
 router.post(
   "/upload",
-  upload.single("image"),
   middleware.uploadMul,
   middleware.uploadAuthentication,
   galleryController.uploadImage

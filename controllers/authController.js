@@ -44,11 +44,11 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm,
     passwordChangedAt: req.body.passwordChangedAt,
   });
-  // createAndSendToken(newUser, 201, res);
-  res.status(201).json({
-    status: "success",
-    message: "A new user created successfully",
-  });
+  createAndSendToken(newUser, 201, res);
+  // res.status(201).json({
+  //   status: "success",
+  //   message: "A new user created successfully",
+  // });
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -203,5 +203,14 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   res.status(204).json({
     status: "success",
     message: "User Deleted Successfully",
+  });
+});
+
+exports.getMe = catchAsync(async (req, res, next) => {
+  const newUser = await User.findById(req.user._id);
+
+  res.status(200).json({
+    status: "success",
+    user: newUser,
   });
 });

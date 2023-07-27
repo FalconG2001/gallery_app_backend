@@ -1,18 +1,6 @@
 const catchAsync = require("./catchAsync");
 
-exports.getAll = (req, res, next) => {
-  req.query = {
-    limit: 10,
-  };
-  next();
-};
-
 exports.uploadMul = (req, res, next) => {
-  if (req.file) {
-    req.body.image = `data:${
-      req.file.mimetype
-    };base64,${req.file.buffer.toString("base64")}`;
-  }
   if (req.body.tags) {
     req.body.tags = req.body.tags.split(",");
   }

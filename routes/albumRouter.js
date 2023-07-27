@@ -15,7 +15,7 @@ router
 
 router
   .route("/:id")
-  .get(albumController.getAlbumById)
+  .get(albumController.getImagesInAlbum)
   .delete(restrictToOwner(Album), albumController.deleteAlbum);
 
 router

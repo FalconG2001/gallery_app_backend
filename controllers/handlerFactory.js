@@ -95,6 +95,8 @@ exports.getAll = (Model, popOptions) =>
 
     const totalCount = await Model.count();
 
+    // console.log(req.query, req.body);
+
     const features = new APIFeatures(tempQuery, req.query)
       .filter()
       .sort()

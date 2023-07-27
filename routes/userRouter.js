@@ -12,6 +12,7 @@ router.post("/forget-password", authController.forgotPassword);
 router.use("/gallery", galleryRoutes);
 
 router.use(authController.protect);
+router.get("/hydrate", authController.getMe);
 router.post("/update-password", authController.updatePassword);
 router.delete(
   "/delete-me",
