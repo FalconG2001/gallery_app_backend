@@ -18,6 +18,8 @@ const app = express();
 //   credentials: true, //access-control-allow-credentials:true
 //   optionSuccessStatus: 200,
 // };
+
+app.enable("trust proxy");
 app.use(cors());
 
 //HTTP Headers
@@ -44,18 +46,7 @@ app.use(mongoSanitize());
 app.use(xss());
 
 //Prevent parameters pollution
-app.use(
-  hpp({
-    whitelist: [
-      "duration",
-      "ratingsQuantity",
-      "ratingsAverage",
-      "maxGroupSize",
-      "difficulty",
-      "price",
-    ],
-  })
-);
+app.use(hpp({}));
 
 //Serving static files
 app.use(express.static(`${__dirname}/public`));
